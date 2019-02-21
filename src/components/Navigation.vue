@@ -5,23 +5,34 @@
                 <li class="navigation__element"
                 v-for="item in navigationElements"
                 :key="item.id">
-                <router-link :to="item.router">{{item.text}}</router-link>
+                <router-link :to="item.route">{{item.text}}</router-link>
                 </li>
+                <li class="navigation__element"><div @click="logOut">LogOut</div></li>
             </ul>
         </nav>
     </aside>
 </template>
 
 <script>
+import firebase from 'firebase'
+
 export default {
     name: 'Navigation',
     data(){
         return{
             navigationElements: [
-                {id: 0, text: "About", router: "/"},
-                {id: 1, text: "Posts", router: "/posts"},
-                {id: 2, text: "New post", router: "/new"}
+                {id: 0, text: "About", route: "/about"},
+                {id: 1, text: "Posts", route: "/posts"},
+                {id: 2, text: "New post", route: "/new"},
             ]
+        }
+    },
+    methods: {
+        logOut: function(){
+            firebase.auth().signOut().then(
+                () => {
+                this.$router.replace('login')
+            })
         }
     }
 }
@@ -50,6 +61,7 @@ export default {
         justify-content: center;
         align-items: center;
         padding: 10px;
+        cursor: pointer;
     }
 }
 
